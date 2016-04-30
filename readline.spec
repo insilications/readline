@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 6.3
-Release  : 24
+Release  : 25
 URL      : http://mirrors.kernel.org/gnu/readline/readline-6.3.tar.gz
 Source0  : http://mirrors.kernel.org/gnu/readline/readline-6.3.tar.gz
 Summary  : No detailed summary available
@@ -52,7 +52,7 @@ Summary: dev components for the readline package.
 Group: Development
 Requires: readline-lib
 Requires: readline-data
-Requires: ncurses-dev
+Provides: readline-devel
 
 %description dev
 dev components for the readline package.
@@ -90,6 +90,8 @@ lib components for the readline package.
 %patch12 -p1
 
 %build
+export CFLAGS="-O3 -g -fopt-info-vec "
+unset LDFLAGS
 %configure  --with-curses
 make V=1  %{?_smp_mflags} SHLIB_LIBS="-ltinfo"
 
@@ -102,6 +104,10 @@ make VERBOSE=1 V=1 %{?_smp_mflags} check
 %install
 rm -rf %{buildroot}
 %make_install
+## make_install_append content
+rm %{buildroot}/usr/lib64/libreadline.so
+echo "INPUT($(readlink %{buildroot}/usr/lib64/libreadline.so) -ltinfow)" > %{buildroot}/usr/lib64/libreadline.so
+## make_install_append end
 
 %files
 %defattr(-,root,root,-)

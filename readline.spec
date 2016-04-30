@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 6.3
-Release  : 26
+Release  : 27
 URL      : http://mirrors.kernel.org/gnu/readline/readline-6.3.tar.gz
 Source0  : http://mirrors.kernel.org/gnu/readline/readline-6.3.tar.gz
 Summary  : No detailed summary available
@@ -90,8 +90,7 @@ lib components for the readline package.
 %patch12 -p1
 
 %build
-export CFLAGS="-O3 -g -fopt-info-vec "
-unset LDFLAGS
+unset LD_AS_NEEDED
 %configure  --with-curses
 make V=1  %{?_smp_mflags} SHLIB_LIBS="-ltinfo"
 

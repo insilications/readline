@@ -52,6 +52,7 @@ Summary: dev components for the readline package.
 Group: Development
 Requires: readline-lib
 Requires: readline-data
+Requires: ncurses-dev
 
 %description dev
 dev components for the readline package.

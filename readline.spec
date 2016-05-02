@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 6.3
-Release  : 32
+Release  : 33
 URL      : http://mirrors.kernel.org/gnu/readline/readline-6.3.tar.gz
 Source0  : http://mirrors.kernel.org/gnu/readline/readline-6.3.tar.gz
 Summary  : No detailed summary available
@@ -27,6 +27,7 @@ Patch9: 0001-Defaultinput-meta-output-meta-to-on.patch
 Patch10: cve-2014-2524.nopatch
 Patch11: 0001-Support-stateless-inputrc-configuration.patch
 Patch12: build.patch
+Patch13: readline-6.2-shlib.patch
 
 %description
 Introduction
@@ -88,6 +89,7 @@ lib components for the readline package.
 %patch9 -p1
 %patch11 -p1
 %patch12 -p1
+%patch13 -p1
 
 %build
 unset LD_AS_NEEDED

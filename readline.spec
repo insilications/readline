@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 7.0
-Release  : 37
+Release  : 38
 URL      : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
 Source0  : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
 Summary  : Gnu Readline library for command line editing

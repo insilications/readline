@@ -4,35 +4,27 @@
 #
 %define keepstatic 1
 Name     : readline
-Version  : 6.3
-Release  : 35
-URL      : http://mirrors.kernel.org/gnu/readline/readline-6.3.tar.gz
-Source0  : http://mirrors.kernel.org/gnu/readline/readline-6.3.tar.gz
-Summary  : No detailed summary available
+Version  : 7.0
+Release  : 36
+URL      : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
+Source0  : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
+Summary  : Gnu Readline library for command line editing
 Group    : Development/Tools
 License  : GFDL-1.3 GPL-3.0 GPL-3.0+
 Requires: readline-lib
 Requires: readline-doc
 Requires: readline-data
 BuildRequires : ncurses-dev
-Patch1: readline63-001
-Patch2: readline63-002
-Patch3: readline63-003
-Patch4: readline63-004
-Patch5: readline63-005
-Patch6: readline63-006
-Patch7: readline63-007
-Patch8: readline63-008
-Patch9: 0001-Defaultinput-meta-output-meta-to-on.patch
-Patch10: cve-2014-2524.nopatch
-Patch11: 0001-Support-stateless-inputrc-configuration.patch
-Patch12: build.patch
-Patch13: readline-6.2-shlib.patch
+Patch1: 0001-Defaultinput-meta-output-meta-to-on.patch
+Patch2: cve-2014-2524.nopatch
+Patch3: 0001-Support-stateless-inputrc-configuration.patch
+Patch4: build.patch
+Patch5: readline-6.2-shlib.patch
 
 %description
 Introduction
 ============
-This is the Gnu Readline library, version 6.3.
+This is the Gnu Readline library, version 7.0.
 The Readline library provides a set of functions for use by applications
 that allow users to edit command lines as they are typed in.  Both
 Emacs and vi editing modes are available.  The Readline library includes
@@ -77,26 +69,20 @@ lib components for the readline package.
 
 
 %prep
-%setup -q -n readline-6.3
-%patch1 -p0
-%patch2 -p0
-%patch3 -p0
-%patch4 -p0
-%patch5 -p0
-%patch6 -p0
-%patch7 -p0
-%patch8 -p0
-%patch9 -p1
-%patch11 -p1
-%patch12 -p1
-%patch13 -p1
+%setup -q -n readline-7.0
+%patch1 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
+export LANG=C
 unset LD_AS_NEEDED
 %configure  --with-curses
 make V=1  %{?_smp_mflags} SHLIB_LIBS="-ltinfo"
 
 %check
+export LANG=C
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost
@@ -125,6 +111,7 @@ chmod 755 %{buildroot}/usr/lib64/*
 /usr/share/readline/rl-callbacktest.c
 /usr/share/readline/rl-fgets.c
 /usr/share/readline/rl.c
+/usr/share/readline/rlbasic.c
 /usr/share/readline/rlcat.c
 /usr/share/readline/rlevent.c
 /usr/share/readline/rlptytest.c

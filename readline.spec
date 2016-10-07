@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 7.0
-Release  : 39
+Release  : 40
 URL      : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
 Source0  : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
 Summary  : Gnu Readline library for command line editing
@@ -97,7 +97,7 @@ rm -rf %{buildroot}
 %make_install
 ## make_install_append content
 rm %{buildroot}/usr/lib64/libreadline.so
-echo "INPUT(libreadline.so.6 -ltinfow)" > %{buildroot}/usr/lib64/libreadline.so
+echo "INPUT(libreadline.so.7 -ltinfow)" > %{buildroot}/usr/lib64/libreadline.so
 chmod 755 %{buildroot}/usr/lib64/*
 ## make_install_append end
 

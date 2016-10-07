@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 7.0
-Release  : 38
+Release  : 39
 URL      : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
 Source0  : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
 Summary  : Gnu Readline library for command line editing
@@ -78,6 +78,10 @@ lib components for the readline package.
 %build
 export LANG=C
 unset LD_AS_NEEDED
+export CFLAGS="$CFLAGS -Os -ffunction-sections "
+export FCFLAGS="$CFLAGS -Os -ffunction-sections "
+export FFLAGS="$CFLAGS -Os -ffunction-sections "
+export CXXFLAGS="$CXXFLAGS -Os -ffunction-sections "
 %configure  --with-curses
 make V=1  %{?_smp_mflags} SHLIB_LIBS="-ltinfo"
 

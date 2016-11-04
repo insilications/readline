@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 7.0
-Release  : 40
+Release  : 41
 URL      : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
 Source0  : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
 Summary  : Gnu Readline library for command line editing
@@ -59,6 +59,14 @@ Group: Documentation
 doc components for the readline package.
 
 
+%package extras
+Summary: extras components for the readline package.
+Group: Default
+
+%description extras
+extras components for the readline package.
+
+
 %package lib
 Summary: lib components for the readline package.
 Group: Libraries
@@ -106,21 +114,21 @@ chmod 755 %{buildroot}/usr/lib64/*
 
 %files data
 %defattr(-,root,root,-)
-/usr/share/readline/excallback.c
-/usr/share/readline/fileman.c
-/usr/share/readline/hist_erasedups.c
-/usr/share/readline/hist_purgecmd.c
-/usr/share/readline/histexamp.c
-/usr/share/readline/manexamp.c
-/usr/share/readline/rl-callbacktest.c
-/usr/share/readline/rl-fgets.c
-/usr/share/readline/rl.c
-/usr/share/readline/rlbasic.c
-/usr/share/readline/rlcat.c
-/usr/share/readline/rlevent.c
-/usr/share/readline/rlptytest.c
-/usr/share/readline/rltest.c
-/usr/share/readline/rlversion.c
+%exclude /usr/share/readline/excallback.c
+%exclude /usr/share/readline/fileman.c
+%exclude /usr/share/readline/hist_erasedups.c
+%exclude /usr/share/readline/hist_purgecmd.c
+%exclude /usr/share/readline/histexamp.c
+%exclude /usr/share/readline/manexamp.c
+%exclude /usr/share/readline/rl-callbacktest.c
+%exclude /usr/share/readline/rl-fgets.c
+%exclude /usr/share/readline/rl.c
+%exclude /usr/share/readline/rlbasic.c
+%exclude /usr/share/readline/rlcat.c
+%exclude /usr/share/readline/rlevent.c
+%exclude /usr/share/readline/rlptytest.c
+%exclude /usr/share/readline/rltest.c
+%exclude /usr/share/readline/rlversion.c
 
 %files dev
 %defattr(-,root,root,-)
@@ -140,6 +148,24 @@ chmod 755 %{buildroot}/usr/lib64/*
 %doc /usr/share/doc/readline/*
 %doc /usr/share/info/*
 %doc /usr/share/man/man3/*
+
+%files extras
+%defattr(-,root,root,-)
+/usr/share/readline/excallback.c
+/usr/share/readline/fileman.c
+/usr/share/readline/hist_erasedups.c
+/usr/share/readline/hist_purgecmd.c
+/usr/share/readline/histexamp.c
+/usr/share/readline/manexamp.c
+/usr/share/readline/rl-callbacktest.c
+/usr/share/readline/rl-fgets.c
+/usr/share/readline/rl.c
+/usr/share/readline/rlbasic.c
+/usr/share/readline/rlcat.c
+/usr/share/readline/rlevent.c
+/usr/share/readline/rlptytest.c
+/usr/share/readline/rltest.c
+/usr/share/readline/rlversion.c
 
 %files lib
 %defattr(-,root,root,-)

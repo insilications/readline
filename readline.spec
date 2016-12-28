@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 7.0
-Release  : 41
+Release  : 42
 URL      : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
 Source0  : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
 Summary  : Gnu Readline library for command line editing
@@ -14,7 +14,13 @@ License  : GFDL-1.3 GPL-3.0 GPL-3.0+
 Requires: readline-lib
 Requires: readline-doc
 Requires: readline-data
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
 BuildRequires : ncurses-dev
+BuildRequires : ncurses-dev32
 Patch1: 0001-Defaultinput-meta-output-meta-to-on.patch
 Patch2: cve-2014-2524.nopatch
 Patch3: 0001-Support-stateless-inputrc-configuration.patch
@@ -51,6 +57,17 @@ Provides: readline-devel
 dev components for the readline package.
 
 
+%package dev32
+Summary: dev32 components for the readline package.
+Group: Default
+Requires: readline-lib32
+Requires: readline-data
+Requires: readline-dev
+
+%description dev32
+dev32 components for the readline package.
+
+
 %package doc
 Summary: doc components for the readline package.
 Group: Documentation
@@ -76,15 +93,28 @@ Requires: readline-data
 lib components for the readline package.
 
 
+%package lib32
+Summary: lib32 components for the readline package.
+Group: Default
+Requires: readline-data
+
+%description lib32
+lib32 components for the readline package.
+
+
 %prep
 %setup -q -n readline-7.0
 %patch1 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+pushd ..
+cp -a readline-7.0 build32
+popd
 
 %build
 export LANG=C
+export SOURCE_DATE_EPOCH=1482960887
 unset LD_AS_NEEDED
 export CFLAGS="$CFLAGS -Os -ffunction-sections "
 export FCFLAGS="$CFLAGS -Os -ffunction-sections "
@@ -93,6 +123,14 @@ export CXXFLAGS="$CXXFLAGS -Os -ffunction-sections "
 %configure  --with-curses
 make V=1  %{?_smp_mflags} SHLIB_LIBS="-ltinfo"
 
+pushd ../build32/
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export CFLAGS="$CFLAGS -m32"
+export CXXFLAGS="$CXXFLAGS -m32"
+export LDFLAGS="$LDFLAGS -m32"
+%configure  --with-curses  --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+make V=1  %{?_smp_mflags} SHLIB_LIBS="-ltinfo"
+popd
 %check
 export LANG=C
 export http_proxy=http://127.0.0.1:9/
@@ -102,6 +140,15 @@ make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
 rm -rf %{buildroot}
+pushd ../build32/
+%make_install32
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+popd
 %make_install
 ## make_install_append content
 rm %{buildroot}/usr/lib64/libreadline.so
@@ -111,6 +158,8 @@ chmod 755 %{buildroot}/usr/lib64/*
 
 %files
 %defattr(-,root,root,-)
+/usr/lib32/libhistory.a
+/usr/lib32/libreadline.a
 
 %files data
 %defattr(-,root,root,-)
@@ -141,7 +190,13 @@ chmod 755 %{buildroot}/usr/lib64/*
 /usr/include/readline/rltypedefs.h
 /usr/include/readline/tilde.h
 /usr/lib64/*.a
-/usr/lib64/*.so
+/usr/lib64/libhistory.so
+/usr/lib64/libreadline.so
+
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/libhistory.so
+/usr/lib32/libreadline.so
 
 %files doc
 %defattr(-,root,root,-)
@@ -169,4 +224,14 @@ chmod 755 %{buildroot}/usr/lib64/*
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/*.so.*
+/usr/lib64/libhistory.so.7
+/usr/lib64/libhistory.so.7.0
+/usr/lib64/libreadline.so.7
+/usr/lib64/libreadline.so.7.0
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libhistory.so.7
+/usr/lib32/libhistory.so.7.0
+/usr/lib32/libreadline.so.7
+/usr/lib32/libreadline.so.7.0

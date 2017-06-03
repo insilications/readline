@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 7.0
-Release  : 44
+Release  : 45
 URL      : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
 Source0  : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
 Source99 : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz.asc
@@ -122,14 +122,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1496502750
+export SOURCE_DATE_EPOCH=1496504766
 unset LD_AS_NEEDED
 export CFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong "
 export FCFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong "
 export FFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong "
 export CXXFLAGS="$CXXFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong "
 %configure  --with-curses --enable-multibyte
-make V=1  %{?_smp_mflags} SHLIB_LIBS="-ltinfo"
+make V=1  %{?_smp_mflags} SHLIB_LIBS="-ltinfow"
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
@@ -137,7 +137,7 @@ export CFLAGS="$CFLAGS -m32"
 export CXXFLAGS="$CXXFLAGS -m32"
 export LDFLAGS="$LDFLAGS -m32"
 %configure  --with-curses --enable-multibyte   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
-make V=1  %{?_smp_mflags} SHLIB_LIBS="-ltinfo"
+make V=1  %{?_smp_mflags} SHLIB_LIBS="-ltinfow"
 popd
 %check
 export LANG=C
@@ -147,7 +147,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1496502750
+export SOURCE_DATE_EPOCH=1496504766
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32

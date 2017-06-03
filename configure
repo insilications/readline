@@ -1,1 +1,1 @@
---with-curses
+--with-curses --enable-multibyte

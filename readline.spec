@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 7.0
-Release  : 45
+Release  : 46
 URL      : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
 Source0  : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
 Source99 : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz.asc

@@ -6,17 +6,17 @@
 #
 %define keepstatic 1
 Name     : readline
-Version  : 7.0
-Release  : 47
-URL      : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
-Source0  : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz
-Source99 : http://mirrors.kernel.org/gnu/readline/readline-7.0.tar.gz.asc
+Version  : 8.0
+Release  : 48
+URL      : http://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
+Source0  : http://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
+Source99 : http://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz.sig
 Summary  : Gnu Readline library for command line editing
 Group    : Development/Tools
 License  : GPL-3.0 GPL-3.0+
-Requires: readline-lib
-Requires: readline-doc
-Requires: readline-data
+Requires: readline-data = %{version}-%{release}
+Requires: readline-lib = %{version}-%{release}
+Requires: readline-license = %{version}-%{release}
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
@@ -28,13 +28,12 @@ Patch1: 0001-Defaultinput-meta-output-meta-to-on.patch
 Patch2: cve-2014-2524.nopatch
 Patch3: 0001-Support-stateless-inputrc-configuration.patch
 Patch4: build.patch
-Patch5: readline-6.2-shlib.patch
-Patch6: tinfow.patch
+Patch5: tinfow.patch
 
 %description
 Introduction
 ============
-This is the Gnu Readline library, version 7.0.
+This is the Gnu Readline library, version 8.0.
 The Readline library provides a set of functions for use by applications
 that allow users to edit command lines as they are typed in.  Both
 Emacs and vi editing modes are available.  The Readline library includes
@@ -53,9 +52,9 @@ data components for the readline package.
 %package dev
 Summary: dev components for the readline package.
 Group: Development
-Requires: readline-lib
-Requires: readline-data
-Provides: readline-devel
+Requires: readline-lib = %{version}-%{release}
+Requires: readline-data = %{version}-%{release}
+Provides: readline-devel = %{version}-%{release}
 
 %description dev
 dev components for the readline package.
@@ -64,9 +63,9 @@ dev components for the readline package.
 %package dev32
 Summary: dev32 components for the readline package.
 Group: Default
-Requires: readline-lib32
-Requires: readline-data
-Requires: readline-dev
+Requires: readline-lib32 = %{version}-%{release}
+Requires: readline-data = %{version}-%{release}
+Requires: readline-dev = %{version}-%{release}
 
 %description dev32
 dev32 components for the readline package.
@@ -91,7 +90,8 @@ extras components for the readline package.
 %package lib
 Summary: lib components for the readline package.
 Group: Libraries
-Requires: readline-data
+Requires: readline-data = %{version}-%{release}
+Requires: readline-license = %{version}-%{release}
 
 %description lib
 lib components for the readline package.
@@ -100,21 +100,29 @@ lib components for the readline package.
 %package lib32
 Summary: lib32 components for the readline package.
 Group: Default
-Requires: readline-data
+Requires: readline-data = %{version}-%{release}
+Requires: readline-license = %{version}-%{release}
 
 %description lib32
 lib32 components for the readline package.
 
 
+%package license
+Summary: license components for the readline package.
+Group: Default
+
+%description license
+license components for the readline package.
+
+
 %prep
-%setup -q -n readline-7.0
+%setup -q -n readline-8.0
 %patch1 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
 pushd ..
-cp -a readline-7.0 build32
+cp -a readline-8.0 build32
 popd
 
 %build
@@ -122,22 +130,23 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1496504766
+export SOURCE_DATE_EPOCH=1546883412
 unset LD_AS_NEEDED
-export CFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong "
-export FCFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong "
-export FFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong "
-export CXXFLAGS="$CXXFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong "
+export CFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
 %configure  --with-curses --enable-multibyte
-make V=1  %{?_smp_mflags} SHLIB_LIBS="-ltinfow"
+make  %{?_smp_mflags} SHLIB_LIBS="-ltinfow"
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export ASFLAGS="$ASFLAGS --32"
 export CFLAGS="$CFLAGS -m32"
 export CXXFLAGS="$CXXFLAGS -m32"
 export LDFLAGS="$LDFLAGS -m32"
 %configure  --with-curses --enable-multibyte   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
-make V=1  %{?_smp_mflags} SHLIB_LIBS="-ltinfow"
+make  %{?_smp_mflags} SHLIB_LIBS="-ltinfow"
 popd
 %check
 export LANG=C
@@ -145,10 +154,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
+cd ../build32;
+make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1496504766
+export SOURCE_DATE_EPOCH=1546883412
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/readline
+cp COPYING %{buildroot}/usr/share/package-licenses/readline/COPYING
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -159,11 +172,11 @@ popd
 fi
 popd
 %make_install
-## make_install_append content
+## install_append content
 rm %{buildroot}/usr/lib64/libreadline.so
 echo "INPUT(libreadline.so.7 -ltinfow)" > %{buildroot}/usr/lib64/libreadline.so
 chmod 755 %{buildroot}/usr/lib64/*
-## make_install_append end
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -185,6 +198,7 @@ chmod 755 %{buildroot}/usr/lib64/*
 %exclude /usr/share/readline/rlptytest.c
 %exclude /usr/share/readline/rltest.c
 %exclude /usr/share/readline/rlversion.c
+/usr/share/readline/rlkeymaps.c
 
 %files dev
 %defattr(-,root,root,-)
@@ -199,18 +213,22 @@ chmod 755 %{buildroot}/usr/lib64/*
 /usr/lib64/*.a
 /usr/lib64/libhistory.so
 /usr/lib64/libreadline.so
+/usr/lib64/pkgconfig/readline.pc
+/usr/share/man/man3/history.3
+/usr/share/man/man3/readline.3
 
 %files dev32
 %defattr(-,root,root,-)
 /usr/lib32/*.a
 /usr/lib32/libhistory.so
 /usr/lib32/libreadline.so
+/usr/lib32/pkgconfig/32readline.pc
+/usr/lib32/pkgconfig/readline.pc
 
 %files doc
-%defattr(-,root,root,-)
+%defattr(0644,root,root,0755)
 %doc /usr/share/doc/readline/*
 %doc /usr/share/info/*
-%doc /usr/share/man/man3/*
 
 %files extras
 %defattr(-,root,root,-)
@@ -232,14 +250,18 @@ chmod 755 %{buildroot}/usr/lib64/*
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/libhistory.so.7
-/usr/lib64/libhistory.so.7.0
-/usr/lib64/libreadline.so.7
-/usr/lib64/libreadline.so.7.0
+/usr/lib64/libhistory.so.8
+/usr/lib64/libhistory.so.8.0
+/usr/lib64/libreadline.so.8
+/usr/lib64/libreadline.so.8.0
 
 %files lib32
 %defattr(-,root,root,-)
-/usr/lib32/libhistory.so.7
-/usr/lib32/libhistory.so.7.0
-/usr/lib32/libreadline.so.7
-/usr/lib32/libreadline.so.7.0
+/usr/lib32/libhistory.so.8
+/usr/lib32/libhistory.so.8.0
+/usr/lib32/libreadline.so.8
+/usr/lib32/libreadline.so.8.0
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/readline/COPYING

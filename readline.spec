@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 8.0
-Release  : 48
+Release  : 49
 URL      : http://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
 Source0  : http://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
 Source99 : http://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz.sig

@@ -4,3 +4,4 @@ cve-2014-2524.nopatch
 build.patch
 #readline-6.2-shlib.patch
 tinfow.patch
+pcfile.patch

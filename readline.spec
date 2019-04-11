@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 8.0
-Release  : 49
+Release  : 50
 URL      : http://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
 Source0  : http://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
 Source99 : http://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz.sig
@@ -17,6 +17,7 @@ License  : GPL-3.0 GPL-3.0+
 Requires: readline-data = %{version}-%{release}
 Requires: readline-lib = %{version}-%{release}
 Requires: readline-license = %{version}-%{release}
+Requires: readline-staticdev32 = %{version}-%{release}
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
@@ -29,6 +30,7 @@ Patch2: cve-2014-2524.nopatch
 Patch3: 0001-Support-stateless-inputrc-configuration.patch
 Patch4: build.patch
 Patch5: tinfow.patch
+Patch6: pcfile.patch
 
 %description
 Introduction
@@ -55,6 +57,7 @@ Group: Development
 Requires: readline-lib = %{version}-%{release}
 Requires: readline-data = %{version}-%{release}
 Provides: readline-devel = %{version}-%{release}
+Requires: readline = %{version}-%{release}
 
 %description dev
 dev components for the readline package.
@@ -115,12 +118,30 @@ Group: Default
 license components for the readline package.
 
 
+%package staticdev
+Summary: staticdev components for the readline package.
+Group: Default
+Requires: readline-dev = %{version}-%{release}
+
+%description staticdev
+staticdev components for the readline package.
+
+
+%package staticdev32
+Summary: staticdev32 components for the readline package.
+Group: Default
+
+%description staticdev32
+staticdev32 components for the readline package.
+
+
 %prep
 %setup -q -n readline-8.0
 %patch1 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 pushd ..
 cp -a readline-8.0 build32
 popd
@@ -130,7 +151,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1546883412
+export SOURCE_DATE_EPOCH=1554994072
 unset LD_AS_NEEDED
 export CFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
 export FCFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -141,10 +162,10 @@ make  %{?_smp_mflags} SHLIB_LIBS="-ltinfow"
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
-export ASFLAGS="$ASFLAGS --32"
-export CFLAGS="$CFLAGS -m32"
-export CXXFLAGS="$CXXFLAGS -m32"
-export LDFLAGS="$LDFLAGS -m32"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
 %configure  --with-curses --enable-multibyte   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags} SHLIB_LIBS="-ltinfow"
 popd
@@ -158,7 +179,7 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1546883412
+export SOURCE_DATE_EPOCH=1554994072
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/readline
 cp COPYING %{buildroot}/usr/share/package-licenses/readline/COPYING
@@ -210,7 +231,6 @@ chmod 755 %{buildroot}/usr/lib64/*
 /usr/include/readline/rlstdc.h
 /usr/include/readline/rltypedefs.h
 /usr/include/readline/tilde.h
-/usr/lib64/*.a
 /usr/lib64/libhistory.so
 /usr/lib64/libreadline.so
 /usr/lib64/pkgconfig/readline.pc
@@ -219,7 +239,6 @@ chmod 755 %{buildroot}/usr/lib64/*
 
 %files dev32
 %defattr(-,root,root,-)
-/usr/lib32/*.a
 /usr/lib32/libhistory.so
 /usr/lib32/libreadline.so
 /usr/lib32/pkgconfig/32readline.pc
@@ -265,3 +284,13 @@ chmod 755 %{buildroot}/usr/lib64/*
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/readline/COPYING
+
+%files staticdev
+%defattr(-,root,root,-)
+/usr/lib64/libhistory.a
+/usr/lib64/libreadline.a
+
+%files staticdev32
+%defattr(-,root,root,-)
+/usr/lib32/libhistory.a
+/usr/lib32/libreadline.a

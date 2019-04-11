@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 8.0
-Release  : 50
+Release  : 51
 URL      : http://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
 Source0  : http://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
 Source99 : http://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz.sig
@@ -17,7 +17,6 @@ License  : GPL-3.0 GPL-3.0+
 Requires: readline-data = %{version}-%{release}
 Requires: readline-lib = %{version}-%{release}
 Requires: readline-license = %{version}-%{release}
-Requires: readline-staticdev32 = %{version}-%{release}
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
@@ -151,7 +150,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1554994072
+export SOURCE_DATE_EPOCH=1554994400
 unset LD_AS_NEEDED
 export CFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
 export FCFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -179,7 +178,7 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1554994072
+export SOURCE_DATE_EPOCH=1554994400
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/readline
 cp COPYING %{buildroot}/usr/share/package-licenses/readline/COPYING

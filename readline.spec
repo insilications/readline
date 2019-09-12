@@ -7,10 +7,10 @@
 %define keepstatic 1
 Name     : readline
 Version  : 8.0
-Release  : 51
-URL      : http://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
-Source0  : http://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
-Source99 : http://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz.sig
+Release  : 52
+URL      : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
+Source0  : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
+Source1 : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz.sig
 Summary  : Gnu Readline library for command line editing
 Group    : Development/Tools
 License  : GPL-3.0 GPL-3.0+
@@ -129,6 +129,7 @@ staticdev components for the readline package.
 %package staticdev32
 Summary: staticdev32 components for the readline package.
 Group: Default
+Requires: readline-dev = %{version}-%{release}
 
 %description staticdev32
 staticdev32 components for the readline package.
@@ -149,27 +150,28 @@ popd
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1554994400
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1568309959
 unset LD_AS_NEEDED
-export CFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
-export CXXFLAGS="$CXXFLAGS -Os -fdata-sections -ffunction-sections -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
 %configure  --with-curses --enable-multibyte
 make  %{?_smp_mflags} SHLIB_LIBS="-ltinfow"
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
-export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
-export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
-export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %configure  --with-curses --enable-multibyte   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags} SHLIB_LIBS="-ltinfow"
 popd
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -178,7 +180,7 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1554994400
+export SOURCE_DATE_EPOCH=1568309959
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/readline
 cp COPYING %{buildroot}/usr/share/package-licenses/readline/COPYING
@@ -203,21 +205,6 @@ chmod 755 %{buildroot}/usr/lib64/*
 
 %files data
 %defattr(-,root,root,-)
-%exclude /usr/share/readline/excallback.c
-%exclude /usr/share/readline/fileman.c
-%exclude /usr/share/readline/hist_erasedups.c
-%exclude /usr/share/readline/hist_purgecmd.c
-%exclude /usr/share/readline/histexamp.c
-%exclude /usr/share/readline/manexamp.c
-%exclude /usr/share/readline/rl-callbacktest.c
-%exclude /usr/share/readline/rl-fgets.c
-%exclude /usr/share/readline/rl.c
-%exclude /usr/share/readline/rlbasic.c
-%exclude /usr/share/readline/rlcat.c
-%exclude /usr/share/readline/rlevent.c
-%exclude /usr/share/readline/rlptytest.c
-%exclude /usr/share/readline/rltest.c
-%exclude /usr/share/readline/rlversion.c
 /usr/share/readline/rlkeymaps.c
 
 %files dev

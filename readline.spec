@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 8.0
-Release  : 53
+Release  : 54
 URL      : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
 Source1 : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz.sig
@@ -151,7 +151,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568309959
+export SOURCE_DATE_EPOCH=1571202397
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -159,7 +159,7 @@ export FCFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-se
 export FFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
 export CXXFLAGS="$CXXFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
 %configure  --with-curses --enable-multibyte
-make  %{?_smp_mflags} SHLIB_LIBS="-ltinfow"
+make  %{?_smp_mflags}  SHLIB_LIBS="-ltinfow"
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
@@ -168,7 +168,7 @@ export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %configure  --with-curses --enable-multibyte   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
-make  %{?_smp_mflags} SHLIB_LIBS="-ltinfow"
+make  %{?_smp_mflags}  SHLIB_LIBS="-ltinfow"
 popd
 %check
 export LANG=C.UTF-8
@@ -180,10 +180,10 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1568309959
+export SOURCE_DATE_EPOCH=1571202397
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/readline
-cp COPYING %{buildroot}/usr/share/package-licenses/readline/COPYING
+cp %{_builddir}/readline-8.0/COPYING %{buildroot}/usr/share/package-licenses/readline/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -196,7 +196,7 @@ popd
 %make_install
 ## install_append content
 rm %{buildroot}/usr/lib64/libreadline.so
-echo "INPUT(libreadline.so.7 -ltinfow)" > %{buildroot}/usr/lib64/libreadline.so
+echo "INPUT(libreadline.so.8 -ltinfow)" > %{buildroot}/usr/lib64/libreadline.so
 chmod 755 %{buildroot}/usr/lib64/*
 ## install_append end
 
@@ -269,7 +269,7 @@ chmod 755 %{buildroot}/usr/lib64/*
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/readline/COPYING
+/usr/share/package-licenses/readline/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 
 %files staticdev
 %defattr(-,root,root,-)

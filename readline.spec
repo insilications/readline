@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 8.0
-Release  : 54
+Release  : 55
 URL      : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
 Source1 : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz.sig
@@ -15,6 +15,7 @@ Summary  : Gnu Readline library for command line editing
 Group    : Development/Tools
 License  : GPL-3.0 GPL-3.0+
 Requires: readline-data = %{version}-%{release}
+Requires: readline-info = %{version}-%{release}
 Requires: readline-lib = %{version}-%{release}
 Requires: readline-license = %{version}-%{release}
 BuildRequires : gcc-dev32
@@ -76,6 +77,7 @@ dev32 components for the readline package.
 %package doc
 Summary: doc components for the readline package.
 Group: Documentation
+Requires: readline-info = %{version}-%{release}
 
 %description doc
 doc components for the readline package.
@@ -87,6 +89,14 @@ Group: Default
 
 %description extras
 extras components for the readline package.
+
+
+%package info
+Summary: info components for the readline package.
+Group: Default
+
+%description info
+info components for the readline package.
 
 
 %package lib
@@ -137,6 +147,7 @@ staticdev32 components for the readline package.
 
 %prep
 %setup -q -n readline-8.0
+cd %{_builddir}/readline-8.0
 %patch1 -p1
 %patch3 -p1
 %patch4 -p1
@@ -151,7 +162,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1571202397
+export SOURCE_DATE_EPOCH=1573774232
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -180,7 +191,7 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1571202397
+export SOURCE_DATE_EPOCH=1573774232
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/readline
 cp %{_builddir}/readline-8.0/COPYING %{buildroot}/usr/share/package-licenses/readline/8624bcdae55baeef00cd11d5dfcfa60f68710a02
@@ -233,7 +244,6 @@ chmod 755 %{buildroot}/usr/lib64/*
 %files doc
 %defattr(0644,root,root,0755)
 %doc /usr/share/doc/readline/*
-%doc /usr/share/info/*
 
 %files extras
 %defattr(-,root,root,-)
@@ -252,6 +262,12 @@ chmod 755 %{buildroot}/usr/lib64/*
 /usr/share/readline/rlptytest.c
 /usr/share/readline/rltest.c
 /usr/share/readline/rlversion.c
+
+%files info
+%defattr(0644,root,root,0755)
+/usr/share/info/history.info
+/usr/share/info/readline.info
+/usr/share/info/rluserman.info
 
 %files lib
 %defattr(-,root,root,-)

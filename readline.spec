@@ -7,10 +7,10 @@
 %define keepstatic 1
 Name     : readline
 Version  : 8.0
-Release  : 56
+Release  : 57
 URL      : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
-Source1 : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz.sig
+Source1  : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz.sig
 Summary  : Gnu Readline library for command line editing
 Group    : Development/Tools
 License  : GPL-3.0 GPL-3.0+
@@ -25,12 +25,16 @@ BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : ncurses-dev
 BuildRequires : ncurses-dev32
-Patch1: 0001-Defaultinput-meta-output-meta-to-on.patch
-Patch2: cve-2014-2524.nopatch
-Patch3: 0001-Support-stateless-inputrc-configuration.patch
-Patch4: build.patch
-Patch5: tinfow.patch
-Patch6: pcfile.patch
+Patch1: readline80-001.patch
+Patch2: readline80-002.patch
+Patch3: readline80-003.patch
+Patch4: readline80-004.patch
+Patch5: 0001-Defaultinput-meta-output-meta-to-on.patch
+Patch6: cve-2014-2524.nopatch
+Patch7: 0001-Support-stateless-inputrc-configuration.patch
+Patch8: build.patch
+Patch9: tinfow.patch
+Patch10: pcfile.patch
 
 %description
 Introduction
@@ -148,11 +152,15 @@ staticdev32 components for the readline package.
 %prep
 %setup -q -n readline-8.0
 cd %{_builddir}/readline-8.0
-%patch1 -p1
-%patch3 -p1
-%patch4 -p1
+%patch1 -p0
+%patch2 -p0
+%patch3 -p0
+%patch4 -p0
 %patch5 -p1
-%patch6 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
+%patch10 -p1
 pushd ..
 cp -a readline-8.0 build32
 popd
@@ -162,12 +170,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1573774232
+export SOURCE_DATE_EPOCH=1602022772
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$FFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$FFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
 export CXXFLAGS="$CXXFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
 %configure  --with-curses --enable-multibyte
 make  %{?_smp_mflags}  SHLIB_LIBS="-ltinfow"
@@ -186,12 +194,12 @@ export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check
+make %{?_smp_mflags} check
 cd ../build32;
-make VERBOSE=1 V=1 %{?_smp_mflags} check || :
+make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1573774232
+export SOURCE_DATE_EPOCH=1602022772
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/readline
 cp %{_builddir}/readline-8.0/COPYING %{buildroot}/usr/share/package-licenses/readline/8624bcdae55baeef00cd11d5dfcfa60f68710a02

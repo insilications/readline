@@ -6,11 +6,11 @@
 #
 %define keepstatic 1
 Name     : readline
-Version  : 8.0
-Release  : 57
-URL      : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
-Source0  : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz
-Source1  : https://mirrors.kernel.org/gnu/readline/readline-8.0.tar.gz.sig
+Version  : 8.1
+Release  : 58
+URL      : https://mirrors.kernel.org/gnu/readline/readline-8.1.tar.gz
+Source0  : https://mirrors.kernel.org/gnu/readline/readline-8.1.tar.gz
+Source1  : https://mirrors.kernel.org/gnu/readline/readline-8.1.tar.gz.sig
 Summary  : Gnu Readline library for command line editing
 Group    : Development/Tools
 License  : GPL-3.0 GPL-3.0+
@@ -25,21 +25,17 @@ BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : ncurses-dev
 BuildRequires : ncurses-dev32
-Patch1: readline80-001.patch
-Patch2: readline80-002.patch
-Patch3: readline80-003.patch
-Patch4: readline80-004.patch
-Patch5: 0001-Defaultinput-meta-output-meta-to-on.patch
-Patch6: cve-2014-2524.nopatch
-Patch7: 0001-Support-stateless-inputrc-configuration.patch
-Patch8: build.patch
-Patch9: tinfow.patch
-Patch10: pcfile.patch
+Patch1: 0001-Defaultinput-meta-output-meta-to-on.patch
+Patch2: cve-2014-2524.nopatch
+Patch3: 0001-Support-stateless-inputrc-configuration.patch
+Patch4: build.patch
+Patch5: tinfow.patch
+Patch6: pcfile.patch
 
 %description
 Introduction
 ============
-This is the Gnu Readline library, version 8.0.
+This is the Gnu Readline library, version 8.1.
 The Readline library provides a set of functions for use by applications
 that allow users to edit command lines as they are typed in.  Both
 Emacs and vi editing modes are available.  The Readline library includes
@@ -150,19 +146,15 @@ staticdev32 components for the readline package.
 
 
 %prep
-%setup -q -n readline-8.0
-cd %{_builddir}/readline-8.0
-%patch1 -p0
-%patch2 -p0
-%patch3 -p0
-%patch4 -p0
+%setup -q -n readline-8.1
+cd %{_builddir}/readline-8.1
+%patch1 -p1
+%patch3 -p1
+%patch4 -p1
 %patch5 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
-%patch10 -p1
+%patch6 -p1
 pushd ..
-cp -a readline-8.0 build32
+cp -a readline-8.1 build32
 popd
 
 %build
@@ -170,7 +162,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1602022772
+export SOURCE_DATE_EPOCH=1607368473
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -199,10 +191,10 @@ cd ../build32;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1602022772
+export SOURCE_DATE_EPOCH=1607368473
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/readline
-cp %{_builddir}/readline-8.0/COPYING %{buildroot}/usr/share/package-licenses/readline/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+cp %{_builddir}/readline-8.1/COPYING %{buildroot}/usr/share/package-licenses/readline/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -280,16 +272,16 @@ chmod 755 %{buildroot}/usr/lib64/*
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libhistory.so.8
-/usr/lib64/libhistory.so.8.0
+/usr/lib64/libhistory.so.8.1
 /usr/lib64/libreadline.so.8
-/usr/lib64/libreadline.so.8.0
+/usr/lib64/libreadline.so.8.1
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libhistory.so.8
-/usr/lib32/libhistory.so.8.0
+/usr/lib32/libhistory.so.8.1
 /usr/lib32/libreadline.so.8
-/usr/lib32/libreadline.so.8.0
+/usr/lib32/libreadline.so.8.1
 
 %files license
 %defattr(0644,root,root,0755)

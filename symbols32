@@ -57,6 +57,7 @@ libreadline.so.8:_hs_append_history_line
 libreadline.so.8:_hs_history_patsearch
 libreadline.so.8:_hs_replace_history_data
 libreadline.so.8:_rl_abort_internal
+libreadline.so.8:_rl_add_executing_keyseq
 libreadline.so.8:_rl_add_macro_char
 libreadline.so.8:_rl_adjust_point
 libreadline.so.8:_rl_any_typein
@@ -69,6 +70,8 @@ libreadline.so.8:_rl_backspace
 libreadline.so.8:_rl_backward_char_internal
 libreadline.so.8:_rl_block_sigint
 libreadline.so.8:_rl_block_sigwinch
+libreadline.so.8:_rl_bracketed_read_key
+libreadline.so.8:_rl_bracketed_read_mbstring
 libreadline.so.8:_rl_bracketed_text
 libreadline.so.8:_rl_callback_data_alloc
 libreadline.so.8:_rl_callback_data_dispose
@@ -81,6 +84,7 @@ libreadline.so.8:_rl_compare_chars
 libreadline.so.8:_rl_control_keypad
 libreadline.so.8:_rl_copy_undo_entry
 libreadline.so.8:_rl_copy_undo_list
+libreadline.so.8:_rl_cr
 libreadline.so.8:_rl_current_display_line
 libreadline.so.8:_rl_digit_p
 libreadline.so.8:_rl_digit_value
@@ -91,6 +95,7 @@ libreadline.so.8:_rl_dispatch_callback
 libreadline.so.8:_rl_dispatch_subseq
 libreadline.so.8:_rl_enable_meta_key
 libreadline.so.8:_rl_enable_paren_matching
+libreadline.so.8:_rl_end_executing_keyseq
 libreadline.so.8:_rl_erase_at_end_of_line
 libreadline.so.8:_rl_erase_entire_line
 libreadline.so.8:_rl_errmsg
@@ -99,6 +104,7 @@ libreadline.so.8:_rl_find_next_mbchar
 libreadline.so.8:_rl_find_prev_mbchar
 libreadline.so.8:_rl_find_prev_mbchar_internal
 libreadline.so.8:_rl_fix_last_undo_of_type
+libreadline.so.8:_rl_fix_mark
 libreadline.so.8:_rl_fix_point
 libreadline.so.8:_rl_forward_char_internal
 libreadline.so.8:_rl_free_history_entry
@@ -108,6 +114,7 @@ libreadline.so.8:_rl_free_undo_list
 libreadline.so.8:_rl_get_char_len
 libreadline.so.8:_rl_get_screen_size
 libreadline.so.8:_rl_init_eightbit
+libreadline.so.8:_rl_init_executing_keyseq
 libreadline.so.8:_rl_init_line_state
 libreadline.so.8:_rl_init_locale
 libreadline.so.8:_rl_init_terminal_io
@@ -126,12 +133,13 @@ libreadline.so.8:_rl_keyseq_cxt_dispose
 libreadline.so.8:_rl_kill_kbd_macro
 libreadline.so.8:_rl_lowercase_p
 libreadline.so.8:_rl_make_prompt_for_search
-libreadline.so.8:_rl_move_cursor_relative
 libreadline.so.8:_rl_move_vert
+libreadline.so.8:_rl_nchars_available
 libreadline.so.8:_rl_next_macro_key
 libreadline.so.8:_rl_nsearch_callback
 libreadline.so.8:_rl_nsearch_cleanup
 libreadline.so.8:_rl_null_function
+libreadline.so.8:_rl_optimize_redisplay
 libreadline.so.8:_rl_output_character_function
 libreadline.so.8:_rl_output_some_chars
 libreadline.so.8:_rl_overwrite_char
@@ -148,9 +156,11 @@ libreadline.so.8:_rl_push_executing_macro
 libreadline.so.8:_rl_pushed_input_available
 libreadline.so.8:_rl_put_indicator
 libreadline.so.8:_rl_qsort_string_compare
+libreadline.so.8:_rl_read_bracketed_paste_prefix
 libreadline.so.8:_rl_read_mbchar
 libreadline.so.8:_rl_read_mbstring
 libreadline.so.8:_rl_redisplay_after_sigwinch
+libreadline.so.8:_rl_refresh_line
 libreadline.so.8:_rl_release_sigint
 libreadline.so.8:_rl_release_sigwinch
 libreadline.so.8:_rl_replace_text
@@ -159,6 +169,7 @@ libreadline.so.8:_rl_reset_completion_state
 libreadline.so.8:_rl_reset_prompt
 libreadline.so.8:_rl_restore_tty_signals
 libreadline.so.8:_rl_revert_all_lines
+libreadline.so.8:_rl_revert_previous_lines
 libreadline.so.8:_rl_rubout_char
 libreadline.so.8:_rl_savestring
 libreadline.so.8:_rl_scxt_alloc
@@ -172,9 +183,12 @@ libreadline.so.8:_rl_set_screen_size
 libreadline.so.8:_rl_set_the_line
 libreadline.so.8:_rl_signal_handler
 libreadline.so.8:_rl_sigwinch_resize_terminal
+libreadline.so.8:_rl_standout_off
+libreadline.so.8:_rl_standout_on
 libreadline.so.8:_rl_start_using_history
 libreadline.so.8:_rl_strindex
 libreadline.so.8:_rl_strip_prompt
+libreadline.so.8:_rl_term_executing_keyseq
 libreadline.so.8:_rl_to_lower
 libreadline.so.8:_rl_to_upper
 libreadline.so.8:_rl_ttyflush
@@ -238,6 +252,7 @@ libreadline.so.8:remove_history
 libreadline.so.8:remove_history_range
 libreadline.so.8:replace_history_entry
 libreadline.so.8:rl_abort
+libreadline.so.8:rl_activate_mark
 libreadline.so.8:rl_add_defun
 libreadline.so.8:rl_add_funmap_entry
 libreadline.so.8:rl_add_undo
@@ -273,6 +288,7 @@ libreadline.so.8:rl_char_search
 libreadline.so.8:rl_character_len
 libreadline.so.8:rl_check_signals
 libreadline.so.8:rl_cleanup_after_signal
+libreadline.so.8:rl_clear_display
 libreadline.so.8:rl_clear_history
 libreadline.so.8:rl_clear_message
 libreadline.so.8:rl_clear_pending_input
@@ -289,6 +305,7 @@ libreadline.so.8:rl_copy_keymap
 libreadline.so.8:rl_copy_region_to_kill
 libreadline.so.8:rl_copy_text
 libreadline.so.8:rl_crlf
+libreadline.so.8:rl_deactivate_mark
 libreadline.so.8:rl_delete
 libreadline.so.8:rl_delete_horizontal_space
 libreadline.so.8:rl_delete_or_show_completions
@@ -354,6 +371,7 @@ libreadline.so.8:rl_insert_completions
 libreadline.so.8:rl_insert_text
 libreadline.so.8:rl_invoking_keyseqs
 libreadline.so.8:rl_invoking_keyseqs_in_map
+libreadline.so.8:rl_keep_mark_active
 libreadline.so.8:rl_kill_full_line
 libreadline.so.8:rl_kill_line
 libreadline.so.8:rl_kill_region
@@ -364,6 +382,7 @@ libreadline.so.8:rl_macro_bind
 libreadline.so.8:rl_macro_dumper
 libreadline.so.8:rl_make_bare_keymap
 libreadline.so.8:rl_make_keymap
+libreadline.so.8:rl_mark_active_p
 libreadline.so.8:rl_maybe_replace_line
 libreadline.so.8:rl_maybe_save_line
 libreadline.so.8:rl_maybe_unsave_line
@@ -380,6 +399,7 @@ libreadline.so.8:rl_noninc_reverse_search_again
 libreadline.so.8:rl_old_menu_complete
 libreadline.so.8:rl_on_new_line
 libreadline.so.8:rl_on_new_line_with_prompt
+libreadline.so.8:rl_operate_and_get_next
 libreadline.so.8:rl_overwrite_mode
 libreadline.so.8:rl_parse_and_bind
 libreadline.so.8:rl_pending_signal

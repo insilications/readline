@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 8.1
-Release  : 59
+Release  : 60
 URL      : https://mirrors.kernel.org/gnu/readline/readline-8.1.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/readline/readline-8.1.tar.gz
 Source1  : https://mirrors.kernel.org/gnu/readline/readline-8.1.tar.gz.sig
@@ -26,12 +26,11 @@ BuildRequires : glibc-libc32
 BuildRequires : ncurses-dev
 BuildRequires : ncurses-dev32
 Patch1: 0001-Defaultinput-meta-output-meta-to-on.patch
-Patch2: cve-2014-2524.nopatch
-Patch3: 0001-Support-stateless-inputrc-configuration.patch
-Patch4: 0001-Fix-to-use-tinfow.patch
-Patch5: build.patch
-Patch6: tinfow.patch
-Patch7: pcfile.patch
+Patch2: 0001-Support-stateless-inputrc-configuration.patch
+Patch3: 0001-Fix-to-use-tinfow.patch
+Patch4: build.patch
+Patch5: tinfow.patch
+Patch6: pcfile.patch
 
 %description
 Introduction
@@ -150,11 +149,11 @@ staticdev32 components for the readline package.
 %setup -q -n readline-8.1
 cd %{_builddir}/readline-8.1
 %patch1 -p1
+%patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
-%patch7 -p1
 pushd ..
 cp -a readline-8.1 build32
 popd
@@ -164,7 +163,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1609808818
+export SOURCE_DATE_EPOCH=1609809242
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -193,7 +192,7 @@ cd ../build32;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1609808818
+export SOURCE_DATE_EPOCH=1609809242
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/readline
 cp %{_builddir}/readline-8.1/COPYING %{buildroot}/usr/share/package-licenses/readline/8624bcdae55baeef00cd11d5dfcfa60f68710a02

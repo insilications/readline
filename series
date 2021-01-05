@@ -5,6 +5,7 @@
 0001-Defaultinput-meta-output-meta-to-on.patch
 cve-2014-2524.nopatch
 0001-Support-stateless-inputrc-configuration.patch
+0001-Fix-to-use-tinfow.patch
 build.patch
 tinfow.patch
 pcfile.patch

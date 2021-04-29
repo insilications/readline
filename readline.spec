@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : readline
 Version  : 8.1
-Release  : 60
+Release  : 61
 URL      : https://mirrors.kernel.org/gnu/readline/readline-8.1.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/readline/readline-8.1.tar.gz
 Source1  : https://mirrors.kernel.org/gnu/readline/readline-8.1.tar.gz.sig
@@ -166,10 +166,10 @@ export LANG=C.UTF-8
 export SOURCE_DATE_EPOCH=1609809242
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
-export CFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$FFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$FFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
-export CXXFLAGS="$CXXFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CFLAGS="$CFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
+export FCFLAGS="$FFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
+export FFLAGS="$FFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
+export CXXFLAGS="$CXXFLAGS -Os -fdata-sections -ffunction-sections -fno-lto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
 %configure  --with-curses --enable-multibyte
 make  %{?_smp_mflags}  SHLIB_LIBS="-ltinfow"
 

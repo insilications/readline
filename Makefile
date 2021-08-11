@@ -1,5 +1,6 @@
 PKG_NAME := readline
-URL = https://mirrors.kernel.org/gnu/readline/readline-8.1.tar.gz
+URL = https://git.savannah.gnu.org/git/readline.git
 ARCHIVES = 
+ARCHIVES_GIT = 
 
 include ../common/Makefile.common

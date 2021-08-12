@@ -1,1 +1,5 @@
 # This file contains recursive sources that require this package
+readline-dev
+readline-dev32
+readline-staticdev
+readline-staticdev32

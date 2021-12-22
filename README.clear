@@ -1,1 +1,0 @@
-When bumping the package version, make sure to update the "INPUT(...)" line in install_append

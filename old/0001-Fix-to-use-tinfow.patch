@@ -1,0 +1,24 @@
+From 137dc45844f0f5b5d19e7226df77e549f515b0d2 Mon Sep 17 00:00:00 2001
+From: Karthik Prabhu Vinod <karthik.prabhu.vinod@intel.com>
+Date: Mon, 4 Jan 2021 13:39:25 -0800
+Subject: [PATCH v1] fix configure to use tinfow
+
+---
+ configure | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/configure b/configure
+index 5a0bf2f..2a0498d 100755
+--- a/configure
++++ b/configure
+@@ -6392,6 +6392,7 @@ fi
+ 
+ case "$TERMCAP_LIB" in
+ -ltinfo)  TERMCAP_PKG_CONFIG_LIB=tinfo ;;
++-ltinfow)  TERMCAP_PKG_CONFIG_LIB=tinfow ;;
+ -lcurses) TERMCAP_PKG_CONFIG_LIB=ncurses ;;
+ -lncurses) TERMCAP_PKG_CONFIG_LIB=ncurses ;;
+ -ltermcap) TERMCAP_PKG_CONFIG_LIB=termcap ;;
+-- 
+2.29.2
+
